@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search Results</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="container">
+
+    <h2>Results for "{{ query }}"</h2>
+
+    {% if books %}
+        <ul>
+            {% for book in books %}
+                <li>
+                    <b>{{ book.title }}</b><br>
+                    Author: {{ book.author }}<br>
+                    ISBN: {{ book.isbn }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No books found.</p>
+    {% endif %}
+
+    <a href="/">⬅ Back to Home</a>
+
+</div>
+
+</body>
+</html>
