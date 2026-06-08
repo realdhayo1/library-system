@@ -2,84 +2,115 @@
 <html>
 <head>
     <title>Library Catalogue</title>
-    <link rel="stylesheet" href="/static/catalog.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='catalog.css') }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
 
 <section class="hero">
     <h1>LIBRARY CATALOGUE</h1>
-    <p>Discover. Learn. Grow.</p>
+    <p>Search and manage your books</p>
 
     <form method="GET" action="/">
-        <input type="text" name="q" placeholder="Search books, authors, ISBN..." required>
+        <input type="text" name="q" placeholder="Search books..." required>
         <button type="submit">Search</button>
     </form>
 </section>
 
-<section class="categories">
-    <h2>Browse by Category</h2>
-    <div class="category-grid">
-        <div class="category-card">📚 Books</div>
-        <div class="category-card">📑 Journals</div>
-        <div class="category-card">🎓 E‑Resources</div>
-        <div class="category-card">📖 Subjects</div>
-        <div class="category-card">⭐ Recommended Books</div>
-        <div class="category-card">🆕 New Arrivals</div>
+<!-- CHECKOUT PANEL -->
+<section class="checkout-box">
+    <h2>CHECKOUT</h2>
+
+    <div id="checkoutList" class="checkout-list">
+        <p class="placeholder">No books added yet</p>
     </div>
+
+    <button class="checkout-btn" onclick="checkoutBooks()">
+        Checkout Books
+    </button>
 </section>
 
+<!-- RESULTS -->
 {% if query %}
-<section class="featured">
-<h2>Search Results</h2>
-<div class="book-grid">
-{% for book in results %}
-<div class="book-card">
-<img src="{{ book.cover }}">
-<div class="book-info">
-<h3>{{ book.title }}</h3>
-<p>{{ book.author }}</p>
-<p>{{ book.year }}</p>
-<p>ISBN: {{ book.isbn }}</p>
-<p>{{ book.availability }}</p>
-</div>
-</div>
-{% endfor %}
-</div>
+<section class="search-results">
+    <h2>Results for "{{ query }}"</h2>
+
+    <div class="book-grid">
+        {% for book in results %}
+        <div class="book-card">
+            <img src="{{ book.cover }}">
+
+            <div class="book-info">
+                <h3>{{ book.title }}</h3>
+                <p>{{ book.author }}</p>
+                <p>{{ book.year }}</p>
+
+                <button id="btn-{{ loop.index0 }}"
+                        onclick="toggleBook('{{ book.title }}', this)">
+                    + Add
+                </button>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
 </section>
 {% endif %}
 
-<section class="featured">
-<h2>Featured Books</h2>
-<div class="book-grid">
-{% for book in featured %}
-<div class="book-card">
-<img src="{{ book.cover }}">
-<div class="book-info">
-<h3>{{ book.title }}</h3>
-<p>{{ book.author }}</p>
-<p>{{ book.year }}</p>
-</div>
-</div>
-{% endfor %}
-</div>
-</section>
+<script>
+let checkout = [];
 
-<section class="featured">
-<h2>Recommended Books</h2>
-<div class="book-grid">
-{% for book in recommended %}
-<div class="book-card">
-<img src="{{ book.cover }}">
-<div class="book-info">
-<h3>{{ book.title }}</h3>
-<p>{{ book.author }}</p>
-<p>{{ book.year }}</p>
-</div>
-</div>
-{% endfor %}
-</div>
-</section>
+function toggleBook(title, btn){
+
+    let index = checkout.indexOf(title);
+
+    if(index === -1){
+        checkout.push(title);
+        btn.innerText = "Remove";
+    } else {
+        checkout.splice(index, 1);
+        btn.innerText = "+ Add";
+    }
+
+    renderCheckout();
+}
+
+function renderCheckout(){
+    let box = document.getElementById("checkoutList");
+    box.innerHTML = "";
+
+    if(checkout.length === 0){
+        box.innerHTML = `<p class="placeholder">No books added yet</p>`;
+        return;
+    }
+
+    checkout.forEach((book) => {
+        let div = document.createElement("div");
+        div.className = "checkout-item";
+        div.innerText = book;
+        box.appendChild(div);
+    });
+}
+
+function checkoutBooks(){
+    if(checkout.length === 0){
+        alert("No books added yet");
+        return;
+    }
+
+    alert("Your books have been checked out");
+
+    checkout = [];
+
+    renderCheckout();
+
+    // reset all buttons
+    document.querySelectorAll("button").forEach(btn => {
+        if(btn.innerText === "Remove"){
+            btn.innerText = "+ Add";
+        }
+    });
+}
+</script>
 
 </body>
 </html>
