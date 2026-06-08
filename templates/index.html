@@ -1,10 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
     <title>University Library Catalogue</title>
     <link rel="stylesheet" href="/static/style.css">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
@@ -12,63 +10,102 @@
 
 <header>
     <h1>University Library Catalogue</h1>
-    <p>Search books, journals, research papers and more</p>
 </header>
 
-<!-- SEARCH BOX -->
+<!-- SEARCH -->
 <div class="search-container">
 
     <form action="/search" method="GET">
 
-        <input
-            type="text"
-            name="q"
-            placeholder="Search books, authors, ISBN..."
-            required>
+        <input type="text" name="q"
+               placeholder="Search books, authors, ISBN..."
+               required>
 
-        <button type="submit">
-            Search
-        </button>
+        <button type="submit">Search</button>
 
     </form>
 
 </div>
 
-<!-- CATEGORY SECTION -->
+<!-- RESULTS SECTION -->
 <div class="container">
 
-    <h2>Explore Library Sections</h2>
+    {% if query %}
 
-    <div class="categories">
+        <h2>{{ total_results }} results for "{{ query }}"</h2>
 
-        <a href="/books" class="category-card">
-            📚 Books
-        </a>
+        {% if books %}
 
-        <a href="/journals" class="category-card">
-            📑 Journals
-        </a>
+            {% for book in books %}
 
-        <a href="/research" class="category-card">
-            🔬 Research Papers
-        </a>
+            <div class="book-card">
 
-        <a href="/magazines" class="category-card">
-            📰 Magazines
-        </a>
+                {% if book.cover %}
+                    <img src="{{ book.cover }}" class="book-cover">
+                {% else %}
+                    <img src="https://via.placeholder.com/120x180?text=No+Cover"
+                         class="book-cover">
+                {% endif %}
 
-        <a href="/new-arrivals" class="category-card">
-            🆕 New Arrivals
-        </a>
+                <div class="book-info">
 
-    </div>
+                    <h3>{{ book.title }}</h3>
+
+                    <p><b>Author:</b> {{ book.author }}</p>
+                    <p><b>Year:</b> {{ book.year }}</p>
+                    <p><b>ISBN:</b> {{ book.isbn }}</p>
+
+                    <a href="/book/{{ book.key[1:] }}">
+                        View Details
+                    </a>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+            <!-- PAGINATION -->
+            <div class="pagination">
+
+                {% if page and page > 1 %}
+                    <a href="/search?q={{ query }}&page={{ page - 1 }}">Prev</a>
+                {% endif %}
+
+                {% if page %}
+                    <a href="/search?q={{ query }}&page={{ page + 1 }}">Next</a>
+                {% endif %}
+
+            </div>
+
+        {% else %}
+
+            <p>No results found.</p>
+
+        {% endif %}
+
+    {% else %}
+
+        <!-- HOME MESSAGE -->
+        <div class="home-info">
+
+            <h2>Welcome to the Library</h2>
+            <p>Search for books, authors, ISBN and more.</p>
+
+            <div class="quick-links">
+
+                <a href="/search?q=books" class="card">📚 Books</a>
+                <a href="/search?q=journals" class="card">📑 Journals</a>
+                <a href="/search?q=research" class="card">🔬 Research</a>
+                <a href="/search?q=magazines" class="card">📰 Magazines</a>
+
+            </div>
+
+        </div>
+
+    {% endif %}
 
 </div>
-
-<!-- FOOTER -->
-<footer>
-    <p>University Library System © 2026</p>
-</footer>
 
 </body>
 </html>
