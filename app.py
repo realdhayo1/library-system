@@ -1,73 +1,50 @@
 from flask import Flask, render_template, request
 import requests
-import os
 
 app = Flask(__name__)
 
-OPENLIB_URL = "https://openlibrary.org/search.json"
-
-
 @app.route("/")
 def home():
-    return render_template("index.html")
-
+    return render_template("index.html", books=[])
 
 @app.route("/search")
 def search():
-    query = request.args.get("q", "")
+
+    query = request.args.get("q")
+
+    if not query:
+        return render_template("index.html", books=[])
+
+    url = f"https://openlibrary.org/search.json?q={query}"
+
+    response = requests.get(url)
+
+    data = response.json()
 
     books = []
 
-    try:
-        response = requests.get(
-            OPENLIB_URL,
-            params={"q": query},
-            timeout=10
-        )
+    for book in data.get("docs", [])[:20]:
 
-        data = response.json()
+        cover_id = book.get("cover_i")
 
-        for item in data.get("docs", [])[:20]:
+        if cover_id:
+            cover = f"https://covers.openlibrary.org/b/id/{cover_id}-M.jpg"
+        else:
+            cover = "https://via.placeholder.com/180x260?text=No+Cover"
 
-            isbn_list = item.get("isbn", [])
-            isbn = isbn_list[0] if isbn_list else None
-
-            cover_url = None
-            if isbn:
-                cover_url = (
-                    f"https://covers.openlibrary.org/b/isbn/{isbn}-M.jpg"
-                )
-
-            work_key = item.get("key", "")
-            book_url = (
-                f"https://openlibrary.org{work_key}"
-                if work_key
-                else "#"
-            )
-
-            books.append({
-                "title": item.get("title", "No Title"),
-                "author": (
-                    item.get("author_name", ["Unknown"])[0]
-                    if item.get("author_name")
-                    else "Unknown"
-                ),
-                "year": item.get("first_publish_year", "N/A"),
-                "isbn": isbn if isbn else "Not Available",
-                "cover": cover_url,
-                "url": book_url
-            })
-
-    except Exception as e:
-        print("Error:", e)
+        books.append({
+            "title": book.get("title", "Unknown Title"),
+            "author": ", ".join(book.get("author_name", ["Unknown Author"])),
+            "year": book.get("first_publish_year", "N/A"),
+            "isbn": book.get("isbn", ["N/A"])[0],
+            "cover": cover
+        })
 
     return render_template(
-        "results.html",
+        "index.html",
         books=books,
-        query=query
+        search_query=query
     )
 
-
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
+    app.run(debug=True)
