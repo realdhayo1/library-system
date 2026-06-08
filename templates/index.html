@@ -1,151 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <meta charset="UTF-8">
+    <title>University Library Catalogue</title>
+    <link rel="stylesheet" href="/static/style.css">
 
-    <title>Library Catalogue</title>
-
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='style.css') }}">
-
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <body>
 
-<nav class="navbar">
+<header>
+    <h1>University Library Catalogue</h1>
+    <p>Search books, journals, research papers and more</p>
+</header>
 
-    <div class="logo">
-        <i class="fas fa-book-open"></i>
-        LIBRARY
-    </div>
+<!-- SEARCH BOX -->
+<div class="search-container">
 
-    <ul>
-        <li><a href="#">Home</a></li>
-        <li><a href="#">Search</a></li>
-        <li><a href="#">Categories</a></li>
-    </ul>
-
-</nav>
-
-<section class="hero">
-
-    <h1>LIBRARY CATALOGUE</h1>
-
-    <div class="divider">
-        <span></span>
-        <i class="fas fa-book-open"></i>
-        <span></span>
-    </div>
-
-    <p>Discover. Learn. Grow.</p>
-
-    <form action="/search" method="GET" class="search-box">
+    <form action="/search" method="GET">
 
         <input
             type="text"
             name="q"
-            placeholder="Search by title, author, subject or keyword..."
-            required
-        >
+            placeholder="Search books, authors, ISBN..."
+            required>
 
         <button type="submit">
-            <i class="fas fa-search"></i>
             Search
         </button>
 
     </form>
 
-</section>
+</div>
 
-<section class="section">
+<!-- CATEGORY SECTION -->
+<div class="container">
 
-    <h2>BROWSE BY CATEGORY</h2>
+    <h2>Explore Library Sections</h2>
 
     <div class="categories">
 
-        <div class="category">
-            <i class="fas fa-book"></i>
-            <p>Books</p>
-        </div>
+        <a href="/books" class="category-card">
+            📚 Books
+        </a>
 
-        <div class="category">
-            <i class="fas fa-file-lines"></i>
-            <p>Journals</p>
-        </div>
+        <a href="/journals" class="category-card">
+            📑 Journals
+        </a>
 
-        <div class="category">
-            <i class="fas fa-graduation-cap"></i>
-            <p>E-Resources</p>
-        </div>
+        <a href="/research" class="category-card">
+            🔬 Research Papers
+        </a>
 
-        <div class="category">
-            <i class="fas fa-users"></i>
-            <p>Subjects</p>
-        </div>
+        <a href="/magazines" class="category-card">
+            📰 Magazines
+        </a>
 
-        <div class="category">
-            <i class="fas fa-bookmark"></i>
-            <p>New Arrivals</p>
-        </div>
+        <a href="/new-arrivals" class="category-card">
+            🆕 New Arrivals
+        </a>
 
     </div>
 
-</section>
+</div>
 
-{% if books %}
-
-<section class="section">
-
-    <h2>Search Results ({{ books|length }})</h2>
-
-    <div class="book-grid">
-
-        {% for book in books %}
-
-        <div class="book-card">
-
-            {% if book.cover %}
-                <img src="{{ book.cover }}" alt="{{ book.title }}">
-            {% else %}
-                <div class="no-cover">
-                    No Cover Available
-                </div>
-            {% endif %}
-
-            <div class="book-info">
-
-                <h3>{{ book.title }}</h3>
-
-                <p>
-                    <strong>Author:</strong>
-                    {{ book.author }}
-                </p>
-
-                <p>
-                    <strong>Year:</strong>
-                    {{ book.year }}
-                </p>
-
-                <p>
-                    <strong>ISBN:</strong>
-                    {{ book.isbn }}
-                </p>
-
-            </div>
-
-        </div>
-
-        {% endfor %}
-
-    </div>
-
-</section>
-
-{% endif %}
+<!-- FOOTER -->
+<footer>
+    <p>University Library System © 2026</p>
+</footer>
 
 </body>
 </html>
