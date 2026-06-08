@@ -1,194 +1,340 @@
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Segoe UI, sans-serif;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-body{
-    background:#f7f8fb;
+body {
+    background: #f7f8fb;
+    line-height: 1.6;
 }
 
-.navbar{
-    background:#001d5c;
-    color:white;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:20px 60px;
+/* HEADER STYLES */
+header {
+    background: linear-gradient(135deg, #001d5c 0%, #0d3b66 100%);
+    color: white;
+    text-align: center;
+    padding: 60px 20px;
 }
 
-.logo{
-    font-size:28px;
-    font-weight:bold;
+header h1 {
+    font-size: 48px;
+    margin-bottom: 10px;
+    font-weight: 700;
 }
 
-.navbar ul{
-    list-style:none;
-    display:flex;
-    gap:40px;
+header p {
+    font-size: 20px;
+    font-weight: 300;
+    opacity: 0.9;
 }
 
-.navbar a{
-    color:white;
-    text-decoration:none;
+/* SEARCH CONTAINER */
+.search-container {
+    background: #eef2f8;
+    padding: 40px 20px;
+    text-align: center;
 }
 
-.hero{
-    background:#eef2f8;
-    text-align:center;
-    padding:80px 20px;
+.search-container form {
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    gap: 10px;
 }
 
-.hero h1{
-    color:#001d5c;
-    font-size:70px;
+.search-container input {
+    flex: 1;
+    padding: 16px 20px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: border-color 0.3s;
 }
 
-.divider{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    gap:20px;
-    margin:25px 0;
+.search-container input:focus {
+    outline: none;
+    border-color: #001d5c;
+    box-shadow: 0 0 5px rgba(0, 29, 92, 0.2);
 }
 
-.divider span{
-    width:120px;
-    height:2px;
-    background:#bbb;
+.search-container button {
+    padding: 16px 35px;
+    background: #001d5c;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: background 0.3s;
 }
 
-.divider i{
-    color:#001d5c;
-    font-size:30px;
+.search-container button:hover {
+    background: #0d3b66;
 }
 
-.hero p{
-    font-size:26px;
-    color:#444;
-    margin-bottom:35px;
+/* CONTAINER */
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 50px auto;
 }
 
-.search-box{
-    max-width:800px;
-    margin:auto;
-    display:flex;
+.container h2 {
+    font-size: 32px;
+    color: #001d5c;
+    margin-bottom: 35px;
+    font-weight: 700;
 }
 
-.search-box input{
-    flex:1;
-    padding:18px;
-    border:1px solid #ccc;
-    font-size:18px;
+/* CATEGORIES SECTION */
+.categories {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
 }
 
-.search-box button{
-    padding:18px 30px;
-    background:#001d5c;
-    color:white;
-    border:none;
-    cursor:pointer;
+.category-card {
+    background: white;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 30px 20px;
+    text-align: center;
+    text-decoration: none;
+    color: #001d5c;
+    font-size: 18px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
-.section{
-    width:90%;
-    margin:50px auto;
+.category-card:hover {
+    transform: translateY(-8px);
+    border-color: #001d5c;
+    box-shadow: 0 8px 20px rgba(0, 29, 92, 0.15);
+    background: #f9fafb;
 }
 
-.section h2{
-    margin-bottom:25px;
+.category-card:active {
+    transform: translateY(-4px);
 }
 
-.categories{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-    gap:20px;
-    margin-top:20px;
+/* FOOTER STYLES */
+footer {
+    background: #001d5c;
+    color: white;
+    text-align: center;
+    padding: 30px 20px;
+    margin-top: 60px;
 }
 
-.category-card{
-    background:white;
-    border:1px solid #ddd;
-    border-radius:10px;
-    padding:25px;
-    text-align:center;
-    transition:0.3s;
+footer p {
+    font-size: 14px;
+    opacity: 0.9;
 }
 
-.category-card:hover{
-    transform:translateY(-5px);
+/* RESULTS PAGE STYLES */
+.section {
+    width: 90%;
+    max-width: 1200px;
+    margin: 50px auto;
 }
 
-.category-card i{
-    font-size:40px;
-    color:#001d5c;
-    margin-bottom:15px;
+.section h2 {
+    font-size: 28px;
+    color: #001d5c;
+    margin-bottom: 30px;
+    font-weight: 700;
 }
 
-.book-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
-    gap:25px;
+.book-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 25px;
 }
 
-.book-card{
-    background:white;
-    border-radius:10px;
-    overflow:hidden;
-    box-shadow:0 3px 10px rgba(0,0,0,.1);
+.book-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    cursor: pointer;
 }
 
-.book-card img{
-    width:100%;
-    height:330px;
-    object-fit:cover;
+.book-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
 }
 
-.no-cover{
-    height:330px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:#ececec;
-    color:#666;
-    font-weight:bold;
+.book-card img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    display: block;
 }
 
-.book-info{
-    padding:15px;
+.no-cover {
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #ececec 0%, #f5f5f5 100%);
+    color: #999;
+    font-weight: 600;
+    font-size: 14px;
+    text-align: center;
+    padding: 20px;
 }
 
-.book-info h3{
-    margin-bottom:10px;
-    color:#001d5c;
+.book-info {
+    padding: 18px;
 }
 
-.book-info p{
-    margin-bottom:8px;
-    color:#555;
+.book-info h3 {
+    font-size: 16px;
+    color: #001d5c;
+    margin-bottom: 8px;
+    font-weight: 700;
+    line-height: 1.4;
 }
 
-@media(max-width:768px){
+.book-info p {
+    margin-bottom: 6px;
+    color: #666;
+    font-size: 14px;
+    line-height: 1.5;
+}
 
-    .navbar{
-        flex-direction:column;
-        gap:15px;
+.book-info p.author {
+    color: #0d3b66;
+    font-weight: 500;
+}
+
+.book-info p.availability {
+    padding: 8px 12px;
+    background: #e8f5e9;
+    color: #2e7d32;
+    border-radius: 4px;
+    font-weight: 600;
+    display: inline-block;
+    font-size: 12px;
+    margin-top: 10px;
+}
+
+.book-info p.availability.checked-out {
+    background: #ffebee;
+    color: #c62828;
+}
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 1024px) {
+    .book-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 32px;
     }
 
-    .categories{
-        grid-template-columns:repeat(2,1fr);
+    header p {
+        font-size: 16px;
     }
 
-    .hero h1{
-        font-size:45px;
+    .search-container form {
+        flex-direction: column;
     }
 
-    .search-box{
-        flex-direction:column;
+    .search-container input,
+    .search-container button {
+        width: 100%;
     }
 
-    .search-box button{
-        width:100%;
+    .container,
+    .section {
+        width: 95%;
+    }
+
+    .categories {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+
+    .category-card {
+        padding: 20px 15px;
+        font-size: 16px;
+    }
+
+    .book-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 15px;
+    }
+
+    .book-card img,
+    .no-cover {
+        height: 220px;
+    }
+}
+
+@media (max-width: 480px) {
+    header {
+        padding: 40px 15px;
+    }
+
+    header h1 {
+        font-size: 24px;
+    }
+
+    header p {
+        font-size: 14px;
+    }
+
+    .search-container {
+        padding: 25px 15px;
+    }
+
+    .container,
+    .section {
+        width: 100%;
+        margin: 30px auto;
+    }
+
+    .container h2,
+    .section h2 {
+        font-size: 22px;
+    }
+
+    .categories {
+        grid-template-columns: 1fr;
+    }
+
+    .book-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    .book-card img,
+    .no-cover {
+        height: 180px;
+    }
+
+    .book-info {
+        padding: 12px;
+    }
+
+    .book-info h3 {
+        font-size: 14px;
+    }
+
+    .book-info p {
+        font-size: 12px;
     }
 }
