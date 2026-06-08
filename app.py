@@ -5,45 +5,67 @@ app = Flask(__name__)
 
 @app.route("/")
 def home():
-    return render_template("index.html", books=[])
+    return render_template(
+        "index.html",
+        books=[],
+        query=""
+    )
 
 @app.route("/search")
 def search():
 
-    query = request.args.get("q")
+    query = request.args.get("q", "").strip()
 
     if not query:
-        return render_template("index.html", books=[])
+        return render_template(
+            "index.html",
+            books=[],
+            query=""
+        )
 
-    url = f"https://openlibrary.org/search.json?q={query}"
+    try:
 
-    response = requests.get(url)
+        response = requests.get(
+            f"https://openlibrary.org/search.json?q={query}",
+            timeout=10
+        )
 
-    data = response.json()
+        data = response.json()
 
-    books = []
+        books = []
 
-    for book in data.get("docs", [])[:20]:
+        for item in data.get("docs", [])[:20]:
 
-        cover_id = book.get("cover_i")
+            title = item.get("title")
+            authors = item.get("author_name")
 
-        if cover_id:
-            cover = f"https://covers.openlibrary.org/b/id/{cover_id}-M.jpg"
-        else:
-            cover = "https://via.placeholder.com/180x260?text=No+Cover"
+            if not title or not authors:
+                continue
 
-        books.append({
-            "title": book.get("title", "Unknown Title"),
-            "author": ", ".join(book.get("author_name", ["Unknown Author"])),
-            "year": book.get("first_publish_year", "N/A"),
-            "isbn": book.get("isbn", ["N/A"])[0],
-            "cover": cover
-        })
+            cover_id = item.get("cover_i")
+
+            if cover_id:
+                cover = f"https://covers.openlibrary.org/b/id/{cover_id}-L.jpg"
+            else:
+                cover = ""
+
+            isbn_list = item.get("isbn", [])
+
+            books.append({
+                "title": title,
+                "author": ", ".join(authors),
+                "year": item.get("first_publish_year", "N/A"),
+                "isbn": isbn_list[0] if isbn_list else "N/A",
+                "cover": cover
+            })
+
+    except Exception:
+        books = []
 
     return render_template(
         "index.html",
         books=books,
-        search_query=query
+        query=query
     )
 
 if __name__ == "__main__":
