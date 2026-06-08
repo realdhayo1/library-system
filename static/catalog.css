@@ -1,113 +1,160 @@
 body{
-    font-family: Arial;
-    margin:0;
-    background:#f4f6f9;
+    font-family: Arial, sans-serif;
+    background: #f5f6fa;
+    margin: 0;
+    padding: 0;
 }
 
-header{
-    background:#0d3b66;
-    color:white;
-    padding:20px;
-    text-align:center;
+.hero{
+    text-align: center;
+    padding: 60px 20px;
 }
 
-.search-container{
-    text-align:center;
-    margin:30px;
+.hero h1{
+    font-size: 56px;
+    color: #102a43;
+    margin-bottom: 10px;
 }
 
-input{
-    width:60%;
-    padding:12px;
+.hero p{
+    font-size: 20px;
+    color: #555;
+    margin-bottom: 25px;
 }
 
-button{
-    padding:12px 18px;
-    background:#0d3b66;
-    color:white;
-    border:none;
+.hero form{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
-.container{
-    width:90%;
-    max-width:1000px;
-    margin:auto;
+.hero input{
+    padding: 14px;
+    width: 60%;
+    max-width: 500px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.hero button{
+    padding: 14px 20px;
+    border: none;
+    background: #102a43;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.hero button:hover{
+    background: #0d2138;
+}
+
+.categories,
+.featured{
+    width: 90%;
+    max-width: 1200px;
+    margin: 40px auto;
+}
+
+.categories h2,
+.featured h2{
+    color: #102a43;
+    margin-bottom: 20px;
+}
+
+.category-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+}
+
+.category-card{
+    background: white;
+    padding: 20px;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.category-card:hover{
+    transform: translateY(-5px);
+}
+
+.book-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
 }
 
 .book-card{
-    display:flex;
-    gap:20px;
-    background:white;
-    padding:15px;
-    margin:15px 0;
-    border-radius:10px;
-    box-shadow:0 2px 8px rgba(0,0,0,0.1);
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
-.book-cover{
-    width:120px;
+.book-card img{
+    width: 100%;
+    height: 260px;
+    object-fit: cover;
 }
 
 .book-info{
-    flex:1;
+    padding: 15px;
 }
 
-.pagination{
-    text-align:center;
-    margin:20px;
+.book-info h3{
+    margin: 0 0 10px;
+    color: #102a43;
 }
 
-.pagination a{
-    background:#0d3b66;
-    color:white;
-    padding:10px 15px;
-    margin:5px;
-    text-decoration:none;
+.book-info p{
+    margin: 5px 0;
+    color: #555;
 }
 
-.quick-links{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-    gap:15px;
-    margin-top:20px;
+.available{
+    color: green;
+    font-weight: bold;
 }
 
-.card{
-    background:white;
-    padding:20px;
-    text-align:center;
-    text-decoration:none;
-    border-radius:10px;
-    color:#0d3b66;
-    box-shadow:0 2px 8px rgba(0,0,0,0.1);
+.checked-out{
+    color: red;
+    font-weight: bold;
 }
 
-@media(max-width:700px){
-    .book-card{
-        flex-direction:column;
-        text-align:center;
+.search-results{
+    width: 90%;
+    max-width: 1200px;
+    margin: 40px auto;
+}
+
+.search-results h2{
+    color: #102a43;
+}
+
+@media(max-width:768px){
+
+    .hero h1{
+        font-size: 40px;
     }
 
-    input{
-        width:90%;
+    .hero input{
+        width: 90%;
     }
-}    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
 
-.category-card:hover {
-    transform: translateY(-8px);
-    border-color: #001d5c;
-    box-shadow: 0 8px 20px rgba(0, 29, 92, 0.15);
-    background: #f9fafb;
-}
+    .book-grid{
+        grid-template-columns: 1fr;
+    }
 
-.category-card:active {
-    transform: translateY(-4px);
-}
+    .category-grid{
+        grid-template-columns: 1fr;
+    }
+}}
 
 /* FOOTER STYLES */
 footer {
