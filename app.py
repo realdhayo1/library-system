@@ -1,117 +1,45 @@
-from datetime import datetime
+from flask import Flask, render_template, request
+import requests
+import os
 
-CURRENT_YEAR = datetime.now().year
+app = Flask(__name__)
 
-
-@app.route("/books")
-def books():
-    return category_search("book")
-
-
-@app.route("/journals")
-def journals():
-    return category_search("journal")
+OPENLIB_URL = "https://openlibrary.org/search.json"
 
 
-@app.route("/research")
-def research():
-    return category_search("research")
+@app.route("/")
+def home():
+    return render_template("index.html", books=None, query=None, total_results=0)
 
 
-@app.route("/magazines")
-def magazines():
-    return category_search("magazine")
+@app.route("/search")
+def search():
 
-
-@app.route("/new-arrivals")
-def new_arrivals():
+    query = request.args.get("q", "")
+    page = int(request.args.get("page", 1))
 
     books = []
+    total_results = 0
 
     try:
         response = requests.get(
             OPENLIB_URL,
-            params={
-                "q": "subject:fiction",
-                "limit": 50
-            }
+            params={"q": query, "page": page},
+            timeout=10
         )
 
         data = response.json()
-
-        for item in data.get("docs", []):
-
-            year = item.get("first_publish_year")
-
-            if (
-                year and
-                CURRENT_YEAR - year <= 5
-            ):
-
-                isbn_list = item.get("isbn", [])
-                isbn = isbn_list[0] if isbn_list else None
-
-                cover_url = None
-
-                if isbn:
-                    cover_url = (
-                        f"https://covers.openlibrary.org/b/isbn/{isbn}-M.jpg"
-                    )
-
-                books.append({
-                    "title": item.get("title", "No Title"),
-                    "author": (
-                        item.get("author_name", ["Unknown"])[0]
-                        if item.get("author_name")
-                        else "Unknown"
-                    ),
-                    "year": year,
-                    "isbn": isbn if isbn else "Not Available",
-                    "cover": cover_url,
-                    "key": item.get("key", ""),
-                    "availability": random.choice(
-                        ["Available", "Checked Out"]
-                    )
-                })
-
-    except Exception as e:
-        print(e)
-
-    return render_template(
-        "results.html",
-        books=books,
-        query="New Arrivals",
-        total_results=len(books),
-        page=1
-    )
-
-
-def category_search(category):
-
-    books = []
-
-    try:
-        response = requests.get(
-            OPENLIB_URL,
-            params={
-                "q": category,
-                "page": 1
-            }
-        )
-
-        data = response.json()
+        total_results = data.get("numFound", 0)
 
         for item in data.get("docs", [])[:20]:
 
             isbn_list = item.get("isbn", [])
             isbn = isbn_list[0] if isbn_list else None
 
-            cover_url = None
-
-            if isbn:
-                cover_url = (
-                    f"https://covers.openlibrary.org/b/isbn/{isbn}-M.jpg"
-                )
+            cover = (
+                f"https://covers.openlibrary.org/b/isbn/{isbn}-M.jpg"
+                if isbn else None
+            )
 
             books.append({
                 "title": item.get("title", "No Title"),
@@ -120,33 +48,43 @@ def category_search(category):
                     if item.get("author_name")
                     else "Unknown"
                 ),
-                "year": item.get(
-                    "first_publish_year",
-                    "N/A"
-                ),
+                "year": item.get("first_publish_year", "N/A"),
                 "isbn": isbn if isbn else "Not Available",
-                "cover": cover_url,
-                "key": item.get("key", ""),
-                "availability": random.choice(
-                    ["Available", "Checked Out"]
-                )
+                "cover": cover,
+                "key": item.get("key", "")
             })
 
-        return render_template(
-            "results.html",
-            books=books,
-            query=category.title(),
-            total_results=len(books),
-            page=1
-        )
-
     except Exception as e:
-        print(e)
+        print("Error:", e)
 
-        return render_template(
-            "results.html",
-            books=[],
-            query=category.title(),
-            total_results=0,
-            page=1
-        )
+    return render_template(
+        "index.html",
+        books=books,
+        query=query,
+        total_results=total_results,
+        page=page
+    )
+
+
+@app.route("/book/<path:work_key>")
+def book_details(work_key):
+
+    try:
+        url = f"https://openlibrary.org/{work_key}.json"
+        res = requests.get(url)
+        data = res.json()
+
+        return f"""
+        <h1>{data.get('title','No Title')}</h1>
+        <p>{data.get('description','No description')}</p>
+        <br>
+        <a href='/'>Back</a>
+        """
+
+    except:
+        return "Book not found"
+
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
